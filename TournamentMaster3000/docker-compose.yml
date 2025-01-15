@@ -1,6 +1,6 @@
 services:
 
-  #serveur de base de donnees
+  # Serveur de base de données
   database:
     image: 'mariadb:11.6'
     container_name: database
@@ -15,3 +15,17 @@ services:
     volumes:
       - ./src/test/resources/schema.sql:/docker-entrypoint-initdb.d/0-schema.sql
       - ./src/test/resources/data.sql:/docker-entrypoint-initdb.d/1-data.sql
+
+  # Service de l'application Spring Boot
+  app:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://database:3306/tournamentmaster
+      SPRING_DATASOURCE_USERNAME: imt
+      SPRING_DATASOURCE_PASSWORD: imt
