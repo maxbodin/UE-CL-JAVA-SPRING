@@ -1,0 +1,17 @@
+services:
+
+  #serveur de base de donnees
+  database:
+    image: 'mariadb:11.6'
+    container_name: database
+    restart: always
+    environment:
+      MYSQL_USER: imt
+      MYSQL_PASSWORD: imt
+      MYSQL_DATABASE: tournamentmaster
+      MYSQL_ROOT_PASSWORD: imt
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./src/test/resources/schema.sql:/docker-entrypoint-initdb.d/0-schema.sql
+      - ./src/test/resources/data.sql:/docker-entrypoint-initdb.d/1-data.sql

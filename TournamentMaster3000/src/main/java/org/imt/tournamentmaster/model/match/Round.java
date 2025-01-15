@@ -1,17 +1,24 @@
 package org.imt.tournamentmaster.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 
 import java.util.Objects;
 
+@Entity
 public class Round {
 
     @JsonIgnore
+    @Id
     private long id;
 
+    @OneToOne
     private Equipe equipeA;
 
+    @OneToOne
     private Equipe equipeB;
 
     private int scoreA;

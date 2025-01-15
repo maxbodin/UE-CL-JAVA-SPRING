@@ -1,17 +1,23 @@
 package org.imt.tournamentmaster.model.equipe;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Equipe {
 
     @JsonIgnore
+    @Id
     private long id;
 
     private String nom;
 
+    @OneToMany
     private List<Joueur> joueurs;
 
     public Equipe() {

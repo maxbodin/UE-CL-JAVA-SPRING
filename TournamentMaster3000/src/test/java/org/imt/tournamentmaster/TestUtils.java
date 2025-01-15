@@ -29,7 +29,11 @@ public abstract class TestUtils {
         Round round2 = new Round(2L, equipe1, equipe2, 3, 4, 2);
         Round round3 = new Round(3L, equipe1, equipe2, 5, 6, 3);
 
-        List<Round> rounds = List.of(round1, round2, round3);
+        // linked list
+        LinkedList<Round> rounds = new LinkedList<>();
+        rounds.add(round1);
+        rounds.add(round2);
+        rounds.add(round3);
 
         // create a match
         Match match = new Match(1L, equipe1, equipe2, rounds, Match.Status.TERMINE);

@@ -1,16 +1,22 @@
 package org.imt.tournamentmaster.model.resultat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 import org.imt.tournamentmaster.model.match.Match;
 
 import java.util.Objects;
 
+@Entity
 public class Resultat {
 
     @JsonIgnore
+    @Id
     private long id;
 
+    @OneToOne
     private Match match;
 
 

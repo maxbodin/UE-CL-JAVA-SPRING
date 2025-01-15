@@ -1,23 +1,25 @@
 package org.imt.tournamentmaster.controller.round;
 
+import org.imt.tournamentmaster.controller.match.RoundController;
 import org.imt.tournamentmaster.model.match.Round;
-import org.imt.tournamentmaster.service.match.RoundService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 import java.util.List;
 
 @SpringBootTest
-public class RoundServiceTest {
+public class RoundControllerTest {
 
     @Autowired
-    private RoundService roundService;
+    private RoundController roundController;
 
     @Test
     public void testGetRoundById() {
-        Round round1 = roundService.getById(1L).orElseThrow();
+        Round round1 = roundController.getById(1L).getBody();
 
         // assert
         Assertions.assertNotNull(round1);
@@ -28,7 +30,7 @@ public class RoundServiceTest {
         Assertions.assertEquals(14, round1.getScoreB());
         Assertions.assertEquals(1, round1.getRoundNumber());
 
-        Round round2 = roundService.getById(2L).orElseThrow();
+        Round round2 = roundController.getById(2L).getBody();
 
         // assert
         Assertions.assertNotNull(round2);
@@ -39,7 +41,7 @@ public class RoundServiceTest {
         Assertions.assertEquals(21, round2.getScoreB());
         Assertions.assertEquals(2, round2.getRoundNumber());
 
-        Round round3 = roundService.getById(3L).orElseThrow();
+        Round round3 = roundController.getById(3L).getBody();
 
         // assert
         Assertions.assertNotNull(round3);
@@ -53,13 +55,15 @@ public class RoundServiceTest {
 
     @Test
     public void testGetNonExistingRoundById_shouldBeNull() {
+        HttpStatusCode status = roundController.getById(42L).getStatusCode();
+
         // assert
-        Assertions.assertTrue(roundService.getById(42L).isEmpty());
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, status);
     }
 
     @Test
     public void testGetAll() {
-        List<Round> rounds = roundService.getAll();
+        List<Round> rounds = roundController.getAll();
 
         // assert
         Assertions.assertNotNull(rounds);

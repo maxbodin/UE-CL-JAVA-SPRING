@@ -1,8 +1,10 @@
 package org.imt.tournamentmaster.repository.equipe;
 
 import org.imt.tournamentmaster.model.equipe.Joueur;
-import org.imt.tournamentmaster.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface JoueurRepository extends Repository<Joueur> {
+@Repository
+public interface JoueurRepository extends CrudRepository<Joueur, Long> {
 
 }
