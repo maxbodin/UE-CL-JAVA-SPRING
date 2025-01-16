@@ -15,15 +15,16 @@ public class Match {
     @Id
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeA;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeB;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Round> rounds; // Set est un type de collection, on va éviter les confusions et appeler ça un "round"
 
+    @Enumerated
     private Status status;
 
     public Match() {

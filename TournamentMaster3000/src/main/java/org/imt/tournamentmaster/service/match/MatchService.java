@@ -1,11 +1,13 @@
 package org.imt.tournamentmaster.service.match;
 
+import org.imt.tournamentmaster.dto.ImportReport;
 import org.imt.tournamentmaster.model.match.Match;
 import org.imt.tournamentmaster.repository.match.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -29,5 +31,26 @@ public class MatchService {
     public List<Match> getAll() {
         return StreamSupport.stream(matchRepository.findAll().spliterator(), false)
                 .toList();
+    }
+
+    @Transactional
+    public ImportReport importMatches(List<Match> matches) {
+        ImportReport report = new ImportReport();
+
+        for (Match match : matches) {
+            if (matchRepository.existsById(match.getId())) {
+                report.addFailedMatch(match, "Duplicate match ID");
+                continue;
+            }
+
+            try {
+                matchRepository.save(match);
+                report.addSuccessfulMatch(match);
+            } catch (Exception e) {
+                report.addFailedMatch(match, e.getMessage());
+            }
+        }
+
+        return report;
     }
 }

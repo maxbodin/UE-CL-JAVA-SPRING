@@ -1,5 +1,6 @@
 package org.imt.tournamentmaster.controller.match;
 
+import org.imt.tournamentmaster.dto.ImportReport;
 import org.imt.tournamentmaster.model.match.Match;
 import org.imt.tournamentmaster.service.match.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,11 @@ public class MatchController {
     @GetMapping
     public List<Match> getAll() {
         return matchService.getAll();
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<ImportReport> importMatches(@RequestBody List<Match> matches) {
+        ImportReport report = matchService.importMatches(matches);
+        return ResponseEntity.ok(report);
     }
 }
