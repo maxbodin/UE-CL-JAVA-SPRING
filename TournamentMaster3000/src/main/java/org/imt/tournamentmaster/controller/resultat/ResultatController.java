@@ -1,9 +1,11 @@
 package org.imt.tournamentmaster.controller.resultat;
 
+import jakarta.validation.constraints.Min;
 import org.imt.tournamentmaster.model.resultat.Resultat;
 import org.imt.tournamentmaster.service.resultat.ResultatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/resultat")
+@Validated
 public class ResultatController {
 
     private final ResultatService resultatService;
@@ -24,7 +27,7 @@ public class ResultatController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resultat> getById(@PathVariable long id) {
+    public ResponseEntity<Resultat> getById(@PathVariable @Min(value = 1, message = "ID must be greater than 0") long id) {
         Optional<Resultat> resultat = resultatService.getById(id);
 
         return resultat.map(ResponseEntity::ok)
@@ -32,7 +35,7 @@ public class ResultatController {
     }
 
     @GetMapping
-    public List<Resultat> getAll() {
-        return resultatService.getAll();
+    public ResponseEntity<List<Resultat>> getAll() {
+        return ResponseEntity.ok(resultatService.getAll());
     }
 }

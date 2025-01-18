@@ -2,6 +2,10 @@ package org.imt.tournamentmaster.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 
 import java.util.List;
@@ -13,19 +17,43 @@ public class Match {
 
     @JsonIgnore
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull(message = "L'équipe A ne peut pas être nulle")
+    @Valid
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeA;
 
+    @NotNull(message = "L'équipe B ne peut pas être nulle")
+    @Valid
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeB;
 
+    @NotNull(message = "La liste des rounds ne peut pas être nulle")
+    @Size(min = 1, max = 11, message = "Le match doit avoir entre 1 et 11 rounds")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Round> rounds; // Set est un type de collection, on va éviter les confusions et appeler ça un "round"
+    private List<@Valid Round> rounds;
 
+    @NotNull(message = "Le statut du match ne peut pas être nul")
     @Enumerated
     private Status status;
+
+    @AssertTrue(message = "Les équipes A et B ne peuvent pas être identiques")
+    @JsonIgnore
+    private boolean isTeamsValid() {
+        return equipeA != null && equipeB != null && !equipeA.equals(equipeB);
+    }
+
+    @AssertTrue(message = "Les numéros de rounds doivent être séquentiels")
+    @JsonIgnore
+    private boolean isRoundNumbersValid() {
+        if (rounds == null || rounds.isEmpty()) return true;
+        for (int i = 0; i < rounds.size(); i++) {
+            if (rounds.get(i).getRoundNumber() != i + 1) return false;
+        }
+        return true;
+    }
 
     public Match() {
     }

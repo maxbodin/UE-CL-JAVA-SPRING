@@ -1,10 +1,12 @@
 package org.imt.tournamentmaster.model.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 
 import java.util.Objects;
@@ -14,18 +16,28 @@ public class Round {
 
     @JsonIgnore
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull(message = "L'équipe A ne peut pas être nulle")
+    @Valid
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeA;
 
+    @NotNull(message = "L'équipe B ne peut pas être nulle")
+    @Valid
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Equipe equipeB;
 
+    @Min(value = 0, message = "Le score ne peut pas être négatif")
+    @Max(value = 999, message = "Le score ne peut pas dépasser 999")
     private int scoreA;
 
+    @Min(value = 0, message = "Le score ne peut pas être négatif")
+    @Max(value = 999, message = "Le score ne peut pas dépasser 999")
     private int scoreB;
 
+    @Min(value = 1, message = "Le numéro du round doit être supérieur à 0")
     private int roundNumber;
 
     public Round() {
@@ -118,4 +130,11 @@ public class Round {
     public int hashCode() {
         return Objects.hash(id, equipeA, equipeB, scoreA, scoreB, roundNumber);
     }
+
+    @AssertTrue(message = "Les équipes A et B ne peuvent pas être identiques")
+    @JsonIgnore
+    private boolean areTeamsValid() {
+        return equipeA != null && equipeB != null && !equipeA.equals(equipeB);
+    }
+
 }

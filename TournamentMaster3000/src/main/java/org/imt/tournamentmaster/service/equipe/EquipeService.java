@@ -30,4 +30,14 @@ public class EquipeService {
         return StreamSupport.stream(equipeRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    @Transactional
+    public Equipe save(Equipe equipe) {
+        return equipeRepository.save(equipe);
+    }
+
+    @Transactional
+    public void delete(Equipe equipe) {
+        equipeRepository.delete(equipe);
+    }
 }

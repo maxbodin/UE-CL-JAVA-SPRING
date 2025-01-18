@@ -1,10 +1,8 @@
 package org.imt.tournamentmaster.model.equipe;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,11 +12,17 @@ public class Equipe {
 
     @JsonIgnore
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Le nom de l'équipe ne peut pas être vide")
+    @Size(min = 2, max = 50, message = "Le nom doit contenir entre 2 et 50 caractères")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s-]+$", message = "Le nom ne peut contenir que des lettres, chiffres, espaces et tirets")
     private String nom;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @NotNull(message = "La liste des joueurs ne peut pas être nulle")
+    @Size(min = 1, max = 11, message = "L'équipe doit avoir entre 1 et 11 joueurs")
     private List<Joueur> joueurs;
 
     public Equipe() {
@@ -72,5 +76,11 @@ public class Equipe {
     @Override
     public int hashCode() {
         return Objects.hash(id, nom, joueurs);
+    }
+
+    @AssertTrue(message = "L'équipe doit avoir une liste de joueurs non-vide")
+    @JsonIgnore
+    private boolean areJoueursValid() {
+        return joueurs != null && !joueurs.isEmpty();
     }
 }
