@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 public class JoueurService {
@@ -27,7 +26,17 @@ public class JoueurService {
 
     @Transactional(readOnly = true)
     public List<Joueur> getAll() {
-        return StreamSupport.stream(joueurRepository.findAll().spliterator(), false)
+        return joueurRepository.findAll().stream()
                 .toList();
+    }
+
+    @Transactional
+    public Joueur save(Joueur joueur) {
+        return joueurRepository.save(joueur);
+    }
+
+    @Transactional
+    public void deleteById(long id) {
+        joueurRepository.deleteById(id);
     }
 }

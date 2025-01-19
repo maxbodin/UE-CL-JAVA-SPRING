@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TournamentmasterApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(TournamentmasterApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(TournamentmasterApplication.class, args);
+    }
 
 }
 
