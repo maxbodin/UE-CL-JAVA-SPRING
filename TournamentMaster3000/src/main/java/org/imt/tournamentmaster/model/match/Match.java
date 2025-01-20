@@ -15,7 +15,6 @@ import java.util.Objects;
 @Table(name = "`match`")
 public class Match {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

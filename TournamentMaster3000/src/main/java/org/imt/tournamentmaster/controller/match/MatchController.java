@@ -42,4 +42,15 @@ public class MatchController {
         ImportReport report = matchService.importMatches(matches);
         return ResponseEntity.ok(report);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Match>> searchMatches(
+            @RequestParam(value = "equipeAId", required = false) Long equipeAId,
+            @RequestParam(value = "equipeBId", required = false) Long equipeBId,
+            @RequestParam(value = "status", required = false) Match.Status status) {
+
+        List<Match> matches = matchService.searchMatches(equipeAId, equipeBId, status);
+
+        return matches.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(matches);
+    }
 }

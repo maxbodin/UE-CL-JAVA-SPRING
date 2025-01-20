@@ -12,7 +12,6 @@ import java.util.Objects;
 @Entity
 public class Joueur {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

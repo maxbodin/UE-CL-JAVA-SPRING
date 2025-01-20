@@ -10,7 +10,6 @@ import java.util.Objects;
 @Entity
 public class Equipe {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
