@@ -1,6 +1,6 @@
 package org.imt.tournamentmaster.model.resultat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
@@ -12,11 +12,10 @@ import java.util.Objects;
 @Entity
 public class Resultat {
 
-    @JsonIgnore
     @Id
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Match match;
 
 
@@ -32,20 +31,20 @@ public class Resultat {
         return id;
     }
 
-    public Match getMatch() {
-        return match;
-    }
-
-    public Equipe determineWinner() {
-        return match.determineWinner();
-    }
-
     public void setId(long id) {
         this.id = id;
     }
 
+    public Match getMatch() {
+        return match;
+    }
+
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    public Equipe determineWinner() {
+        return match.determineWinner();
     }
 
     @Override

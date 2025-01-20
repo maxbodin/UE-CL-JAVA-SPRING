@@ -4,10 +4,7 @@ import org.imt.tournamentmaster.model.match.Round;
 import org.imt.tournamentmaster.service.match.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +35,30 @@ public class RoundController {
 
     @GetMapping("/max/{scoreA}")
     public List<Round> getMaxScore(@PathVariable int scoreA) {
-       return roundService.getByScoreAGreaterThanEqual(scoreA);
+        return roundService.getByScoreAGreaterThanEqual(scoreA);
+    }
+
+    @PostMapping
+    public ResponseEntity<Round> createRound(@RequestBody Round newRound) {
+        Round savedRound = roundService.save(newRound);
+        return ResponseEntity.ok(savedRound);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Round> updateRound(@PathVariable Long id, @RequestBody Round round) {
+        Round updatedRound = roundService.updateRound(id, round);
+        return ResponseEntity.ok(updatedRound);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRound(@PathVariable long id) {
+        Optional<Round> existingRound = roundService.getById(id);
+
+        if (existingRound.isPresent()) {
+            roundService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

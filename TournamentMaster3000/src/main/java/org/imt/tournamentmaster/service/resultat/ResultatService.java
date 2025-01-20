@@ -30,4 +30,15 @@ public class ResultatService {
         return StreamSupport.stream(resultatRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    @Transactional
+    public Resultat save(Resultat resultat) {
+        return resultatRepository.save(resultat);
+    }
+
+    @Transactional
+    public void deleteById(long id) {
+        resultatRepository.deleteById(id);
+    }
 }
+

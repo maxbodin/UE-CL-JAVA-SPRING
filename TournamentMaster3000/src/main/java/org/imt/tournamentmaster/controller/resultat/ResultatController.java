@@ -1,13 +1,11 @@
 package org.imt.tournamentmaster.controller.resultat;
 
+import org.imt.tournamentmaster.model.equipe.Equipe;
 import org.imt.tournamentmaster.model.resultat.Resultat;
 import org.imt.tournamentmaster.service.resultat.ResultatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,5 +32,50 @@ public class ResultatController {
     @GetMapping
     public List<Resultat> getAll() {
         return resultatService.getAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Resultat> createResultat(@RequestBody Resultat newResultat) {
+        Resultat savedResultat = resultatService.save(newResultat);
+        return ResponseEntity.ok(savedResultat);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Resultat> updateResultat(@PathVariable long id, @RequestBody Resultat updatedResultat) {
+        Optional<Resultat> existingResultat = resultatService.getById(id);
+
+        if (existingResultat.isPresent()) {
+            Resultat resultat = existingResultat.get();
+            resultat.setMatch(updatedResultat.getMatch());
+
+            Resultat savedResultat = resultatService.save(resultat);
+            return ResponseEntity.ok(savedResultat);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteResultat(@PathVariable long id) {
+        Optional<Resultat> existingResultat = resultatService.getById(id);
+
+        if (existingResultat.isPresent()) {
+            resultatService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/winner")
+    public ResponseEntity<String> determineWinner(@PathVariable long id) {
+        Optional<Resultat> existingResultat = resultatService.getById(id);
+
+        if (existingResultat.isPresent()) {
+            Equipe winner = existingResultat.get().determineWinner();
+            return ResponseEntity.ok("The winner is: " + winner.getNom());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

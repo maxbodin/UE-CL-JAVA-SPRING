@@ -1,6 +1,6 @@
 package org.imt.tournamentmaster.model.match;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
@@ -11,14 +11,13 @@ import java.util.Objects;
 @Entity
 public class Round {
 
-    @JsonIgnore
     @Id
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Equipe equipeA;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Equipe equipeB;
 
     private int scoreA;
@@ -43,44 +42,44 @@ public class Round {
         return id;
     }
 
-    public Equipe getEquipeA() {
-        return equipeA;
-    }
-
-    public Equipe getEquipeB() {
-        return equipeB;
-    }
-
-    public int getScoreA() {
-        return scoreA;
-    }
-
-    public int getScoreB() {
-        return scoreB;
-    }
-
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Equipe getEquipeA() {
+        return equipeA;
     }
 
     public void setEquipeA(Equipe equipeA) {
         this.equipeA = equipeA;
     }
 
+    public Equipe getEquipeB() {
+        return equipeB;
+    }
+
     public void setEquipeB(Equipe equipeB) {
         this.equipeB = equipeB;
+    }
+
+    public int getScoreA() {
+        return scoreA;
     }
 
     public void setScoreA(int scoreA) {
         this.scoreA = scoreA;
     }
 
+    public int getScoreB() {
+        return scoreB;
+    }
+
     public void setScoreB(int scoreB) {
         this.scoreB = scoreB;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 
     public void setRoundNumber(int roundNumber) {
