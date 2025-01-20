@@ -1,6 +1,5 @@
 package org.imt.tournamentmaster.model.match;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 
@@ -11,17 +10,16 @@ import java.util.Objects;
 @Table(name = "`match`")
 public class Match {
 
-    @JsonIgnore
     @Id
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Equipe equipeA;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Equipe equipeB;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Round> rounds; // Set est un type de collection, on va éviter les confusions et appeler ça un "round"
 
     private Status status;
@@ -41,36 +39,36 @@ public class Match {
         return id;
     }
 
-    public Equipe getEquipeA() {
-        return equipeA;
-    }
-
-    public Equipe getEquipeB() {
-        return equipeB;
-    }
-
-    public List<Round> getRounds() {
-        return rounds;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Equipe getEquipeA() {
+        return equipeA;
     }
 
     public void setEquipeA(Equipe equipeA) {
         this.equipeA = equipeA;
     }
 
+    public Equipe getEquipeB() {
+        return equipeB;
+    }
+
     public void setEquipeB(Equipe equipeB) {
         this.equipeB = equipeB;
     }
 
+    public List<Round> getRounds() {
+        return rounds;
+    }
+
     public void setRounds(List<Round> rounds) {
         this.rounds = rounds;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public void setStatus(Status status) {
