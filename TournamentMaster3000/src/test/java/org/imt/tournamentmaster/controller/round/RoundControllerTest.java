@@ -63,7 +63,7 @@ public class RoundControllerTest {
 
     @Test
     public void testGetAll() {
-        List<Round> rounds = roundController.getAll();
+        List<Round> rounds = roundController.getAll().getBody();
 
         // assert
         Assertions.assertNotNull(rounds);
